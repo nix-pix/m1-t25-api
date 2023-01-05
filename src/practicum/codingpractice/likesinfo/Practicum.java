@@ -1,3 +1,5 @@
+package practicum.codingpractice.likesinfo;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -6,6 +8,7 @@ class LikesInfo {
     private boolean hasOwnerLiked;
     private Like[] likes;
     private int repostsCount;
+    private LastLikeInfo lastLikeInfo;
 
     public boolean isHasOwnerLiked() {
         return hasOwnerLiked;
@@ -29,6 +32,14 @@ class LikesInfo {
 
     public void setRepostsCount(int repostsCount) {
         this.repostsCount = repostsCount;
+    }
+
+    public LastLikeInfo getLastLikeInfo() {
+        return lastLikeInfo;
+    }
+
+    public void setLastLikeInfo(LastLikeInfo info) {
+        this.lastLikeInfo = info;
     }
 }
 
@@ -60,14 +71,47 @@ class Like {
     }
 }
 
+class LastLikeInfo {
+    // ваш код
+    private String user;
+    private int hours;
+    private int minutes;
+
+    public String getName() {
+        return user;
+    }
+
+    public void setName(String name) {
+        this.user = name;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+}
+
 public class Practicum {
 
-
-    // IOException могут сгенерировать методы create() и bind(...)
     public static void main(String[] args) throws IOException {
+        String lastLikeInfoStr = "{ \"user\": \"Алексей\", \"hours\": 12, \"minutes\": 30}";
+        Gson gson = new Gson();
+        LastLikeInfo lastLikeInfo = gson.fromJson(lastLikeInfoStr, LastLikeInfo.class); // код десериализации
         LikesInfo likesInfo = new LikesInfo();
         likesInfo.setRepostsCount(10);
         likesInfo.setHasOwnerLiked(true);
+        likesInfo.setLastLikeInfo(lastLikeInfo);
         likesInfo.setLikes(new Like[]{
                 new Like("Алексей", "http://example.com/avatars/aleksey.jpg"),
                 new Like("Елена", "http://example.com/avatars/elena.jpg"),
@@ -75,5 +119,7 @@ public class Practicum {
         });
 
         // код сериализации
+        String likesInfoSerialized = gson.toJson(likesInfo);
+        System.out.println(likesInfoSerialized);
     }
 }
